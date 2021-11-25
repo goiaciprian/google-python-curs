@@ -9,7 +9,7 @@ class Fractie(object):
         return f"{self.get_numarator()}/{self.get_numitor()}"
 
     def __add__(self, fractie):
-        self.veirificareNumitor(fractie)
+        self.veirificare_numitor(fractie)
 
         if(fractie.get_numitor() == self.get_numitor()):
             return Fractie(self.get_numarator() + fractie.get_numarator(), self.get_numitor())
@@ -20,7 +20,7 @@ class Fractie(object):
             return Fractie(numarator, numitor)
 
     def __sub__(self, fractie):
-        self.veirificareNumitor(fractie)
+        self.veirificare_numitor(fractie)
 
         if(fractie.get_numitor() == self.get_numitor()):
             return Fractie(self.get_numarator() - fractie.get_numarator(), self.get_numitor())
@@ -58,4 +58,4 @@ if __name__ == "__main__":
     inversaF3 = f3.inverse()
     print(f"{f1} + {f2} = {f3}")
     print(f"Inversa {f3} = {inversaF3}")
-    print(f"{f3} - {inversaF3} = {f3 - inversaF3}")
+    print(f"{f1} - {inversaF3} = {f1 - inversaF3}")
