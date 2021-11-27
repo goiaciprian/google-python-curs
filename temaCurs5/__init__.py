@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 from os.path import isfile
 import json
 from tabulate import tabulate
+from json.decoder import JSONDecodeError
 
 
 class WebScrapper(object):
@@ -34,11 +35,14 @@ class WebScrapper(object):
         self._denumireJucator = kwargs['denumireJucator'] if self._check_if_in_kwargs(kwargs, 'denumireJucator') else {
             'htmlElement': 'span', 'class_': 'post-author-name'}
 
-        self._jucatoriFormatati = {}
+        self._jucatoriFormatati = dict()
 
     def __str__(self):
         totiJucatorii = self._get_reprezentare()
-        return tabulate(totiJucatorii, headers=['Pozitie', 'Rank', 'Denumire', 'Puncte'])
+        return self._print(totiJucatorii)
+
+    def _print(self, lista):
+        return tabulate(lista, headers=['Pozitie', 'Rank', 'Denumire', 'Puncte'])
 
     def _check_if_in_kwargs(self, kwargs, key):
         return key in kwargs.keys()
@@ -77,12 +81,14 @@ class WebScrapper(object):
 
         return {'loc': locJucatorInt, 'rank': rank, 'denumire': denumire, 'puncte': puncteJucatorInt}
 
-    def get_jucatori(self, numarPagina=1):
+    def get_jucatori(self, numarPagina=-1):
         if(numarPagina in self._jucatoriFormatati.keys()):
             return self._jucatoriFormatati[numarPagina]
 
-        siteHtml = requests.get(
-            self._url if numarPagina == 1 else f'{self._url}?page={numarPagina}')
+        _url = self._url if numarPagina < 1 else f'{self._url}?page={numarPagina}'
+
+        siteHtml = requests.get(_url)
+
         continut = BeautifulSoup(siteHtml.content, 'html.parser')
 
         containerJucatori = continut.find(
@@ -92,8 +98,13 @@ class WebScrapper(object):
             self._containerLista['htmlElement'], class_=self._listaJucatori['class_'])
 
         jucatoriFormatati = map(self._build_obj, listaJucatori)
-        self._jucatoriFormatati[numarPagina] = list(jucatoriFormatati)
-        return self._jucatoriFormatati[numarPagina]
+
+        self._jucatoriFormatati[str(numarPagina if numarPagina > 1 else 1)] = list(
+            jucatoriFormatati)
+
+        if(numarPagina == -1):
+            return [self._jucatoriFormatati[str(numarPagina)] for numarPagina in self._jucatoriFormatati.keys()][0]
+        return self._jucatoriFormatati[str(numarPagina)]
 
     def salveaza_in_fisier(self, pagina=-1, rescrie=True):
         with open('./temaCurs5/jucatori.txt', 'w' if rescrie else 'a') as f:
@@ -103,7 +114,11 @@ class WebScrapper(object):
     def citeste_din_fisier(self, pagina=1):
         if(isfile('./temaCurs5/jucatori.txt')):
             with open('./temaCurs5/jucatori.txt', 'r') as f:
-                self._jucatoriFormatati = json.load(f)
-                return self._jucatoriFormatati[str(pagina)]
+                try:
+                    self._jucatoriFormatati = json.load(f)
+                except JSONDecodeError:
+                    return "Fisierul este gol"
+                listaJucatori = self._build_print_obj(str(pagina))
+                return self._print(listaJucatori)
 
         return 'Fisierul nu exista'
