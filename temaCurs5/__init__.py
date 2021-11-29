@@ -58,7 +58,10 @@ class WebScrapper(object):
         return totiJucatorii
 
     def _build_print_obj(self, pagina):
-        listaJucator = self._jucatoriFormatati[pagina]
+        try:
+            listaJucator = self._jucatoriFormatati[pagina]
+        except KeyError:
+            return []
         return list(map(lambda jucator: [jucator['loc'], jucator['rank'], jucator['denumire'], jucator['puncte']], listaJucator))
 
     def _build_obj(self, jucatorRand):
