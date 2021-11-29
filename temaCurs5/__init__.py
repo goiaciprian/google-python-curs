@@ -42,6 +42,8 @@ class WebScrapper(object):
         return self._print(totiJucatorii)
 
     def _print(self, lista):
+        if lista.__len__() == 0:
+            return ''
         return tabulate(lista, headers=['Pozitie', 'Rank', 'Denumire', 'Puncte'])
 
     def _check_if_in_kwargs(self, kwargs, key):
@@ -117,7 +119,8 @@ class WebScrapper(object):
                 try:
                     self._jucatoriFormatati = json.load(f)
                 except JSONDecodeError:
-                    return "Fisierul este gol"
+                    print("Fisierul este gol")
+                    return None
                 listaJucatori = self._build_print_obj(str(pagina))
                 return self._print(listaJucatori)
 
