@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Our first app</title>
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="" />
+  </head>
+  <body>
+    <div class="main-wrapper">
+      <h1>
+        <div style="display: flex; align-items: baseline; gap: 1em">
+          <a href="/">Curs 7</a>
+          {% block header %} {% endblock %}
+        </div>
+      </h1>
+      {% block content %} {% endblock %}
+    </div>
+  </body>
+  <style type="text/css">
+    .main-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      border: 1px solid gray;
+      width: min-content;
+      margin: 0 auto;
+      border-radius: 20px;
+      padding: 30px;
+      min-width: 40em;
+      background-color: #fff;
+      box-shadow: 2px 12px 21px -4px #000000;
+    }
+    body {
+      background-color: rgba(227, 227, 227, 0.3);
+      margin-top: 10em;
+    }
+  </style>
+</html>

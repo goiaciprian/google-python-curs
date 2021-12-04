@@ -1,0 +1,84 @@
+{% extends 'base.html' %} {% block header %}
+<h5>Employees</h5>
+{% endblock %} {% block content %}
+<div style="display: flex; gap: 2em; align-items: center; flex-direction: column">
+  {% if employers %}
+  <label style="display: flex; gap: 1em; font-weight: bold"
+    >Employers:
+    <div>
+      <select id="employersSelect">
+        {% for employer in employers %} 
+          {% if employer.id == curent_employer.id %}
+            <option value="{{ employer.id }}" selected>{{ employer.name }} - {{employer.wage}} </option>
+          {% else %}
+            <option value="{{ employer.id }}">{{ employer.name }} - {{employer.wage}} </option>
+           {% endif %}
+          {% endfor %}  
+      </select>
+    </div>
+  </label>
+  {% endif %}
+
+  {% if users %}
+    <div>
+      <table>
+        <tr>
+          <th>ID</th>
+          <th>First name</th>
+          <th>Last name</th>
+          <th>Email</th>
+          <th>Action</th>
+        </tr>
+        {% for user in users %}
+          <tr>
+            <td>{{ user.id }}</td>
+            <td>{{ user.first_name }}</td>
+            <td>{{ user.last_name }}</td>
+            <td>{{ user.email }}</td>
+            <td>
+            {% if user.hired %}
+              <button onclick="fire({{curent_employer.id}}, {{user.id}})" >Fire</button>
+            {% else %}
+              <button onclick="hire({{curent_employer.id}}, {{user.id}})">Hire</button>
+            {% endif %}
+            </td>
+          </tr>
+        {% endfor %}
+      </table>
+    </div>
+  {% endif %}
+
+  <style type="text/css">
+    td {
+      padding: 0 20px;
+    }
+  </style>
+  <script>
+    const employers_select = document.getElementById("employersSelect");
+    employers_select.addEventListener("change", function () {
+      window.location.href = "/employees/" + employers_select.value;
+    });
+
+    function fire(employer_id, user_id) {
+      fetch('/api/fire_employee', {
+        method: 'POST',
+        body: JSON.stringify({
+          employer_id: employer_id,
+          user_id: user_id
+        }),
+        }).then(() => location.reload())
+    }
+
+    function hire(employer_id, user_id) {
+      fetch('/api/hire_user', {
+        method: 'POST',
+        body: JSON.stringify({
+          employer_id: employer_id,
+          user_id: user_id
+        }),
+        }).then(() => location.reload())
+      }
+
+  </script>
+</div>
+{% endblock %}
