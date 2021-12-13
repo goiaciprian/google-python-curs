@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path
-from hr.views import add_new_employee, delete_user, employees, employees_redirect, fire_employee, merge_user, users, merge_employer, delete_employer, homepage, employers
+# from hr.views import add_new_employee, delete_user, employees, employees_redirect, fire_employee, merge_user, users, merge_employer, delete_employer_asd, homepage, employers
 
 
 """hr_manager URL Configuration
@@ -23,15 +23,15 @@ from django.urls import path
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', homepage),
-    path('employers/', employers),
-    path('users/', users),
-    path('employees/', employees_redirect),
-    path('employees/<int:id_employer>', employees),
-    path('api/employers', merge_employer),
-    path('api/employers/<int:employer_id>', delete_employer),
-    path('api/users', merge_user),
-    path('api/users/<int:user_id>', delete_user),
-    path('api/fire_employee', fire_employee),
-    path('api/hire_user', add_new_employee),
+    # path('', homepage),
+    # path('employers/', employers),
+    # path('users/', users),
+    # path('employees/', employees_redirect),
+    # path('employees/<int:id_employer>', employees),
+    # path('api/employers', merge_employer),
+    # path('api/employers/<int:employer_id>', delete_employer_asd),
+    # path('api/users', merge_user),
+    # path('api/users/<int:user_id>', delete_user),
+    # path('api/fire_employee', fire_employee),
+    # path('api/hire_user', add_new_employee),
 ]

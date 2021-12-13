@@ -16,7 +16,7 @@
         <td>{{employer.id}}</td>
         <td>{{ employer.name}}</td>
         <td>{{ employer.wage}}</td>
-        <td><button onclick="delete({'id':{{employer.id}}})">Delete</button></td>
+        <td><button onclick="delete_emp({'id':{{employer.id}}})">Delete</button></td>
       </tr>
       {% endfor %}
     </table>
@@ -54,7 +54,7 @@
     if (window.history.replaceState) {
       window.history.replaceState(null, null, window.location.href);
     }
-    function delete(employer) {
+    function delete_emp(employer) {
       fetch(`/api/employers/${employer.id}`, {
         method: "DELETE",
       }).then((res) => location.reload());
